@@ -1,6 +1,13 @@
 <?php
 require_once('lib/config.php');
+require_once('lib/pdo.php');
+$currentPage = basename($_SERVER['SCRIPT_NAME']);
+
+
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,12 +29,14 @@ require_once('lib/config.php');
         </a>
       </div>
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="index.php" class="nav-link px-2 link-secondary">Accueil</a></li>
-        <li><a href="recettes.php" class="nav-link px-2">Nos recettes</a></li>
-        <li><a href="#" class="nav-link px-2">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2">About</a></li>
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 nav nav-pills">
+
+        <?php foreach ($mainMenu as $key => $value){?>
+
+          <li class="nav-item"> <a href="<?=$key;?>" class="nav-link <?php if($currentPage === $key) {echo'active';}?>"> <?=$value;?> </a></li> <?php
+
+          }?>
+
       </ul>
 
       <div class="col-md-3 text-end">
