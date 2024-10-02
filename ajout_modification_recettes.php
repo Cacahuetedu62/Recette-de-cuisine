@@ -7,11 +7,19 @@
 
     $errors = [];
     $messages = [];
+    $recipe = [
+        'title' => $_POST['title'],
+        'description' => $_POST['description'],
+        'ingredients' => $_POST['ingredients'],
+        'instructions' => $_POST['instructions'],
+        'category_id' => $_POST['category'],
+    ];
 
     $categories = getCategories($pdo);
 
 
 if(isset($_POST['saveRecipe']))  {
+    $fileName = null;
 
 if(isset($_FILES['file']['tmp_name']) && $_FILES ['file']['tmp_name'] !=''){
     $checkImage = getimagesize($_FILES['file']['tmp_name']);
@@ -26,19 +34,18 @@ move_uploaded_file($_FILES['file']['tmp_name'],_RECIPES_IMG_PATH_.$fileName);
     }
 }
 
-
-
-    /*
-$res = saveRecipe($pdo, $_POST['category'], $_POST['title'],$_POST['description'],$_POST['ingredients'],$_POST['instructions'], null);
-
-
-if($res) {
+    if (!$errors) {
+        $res = saveRecipe($pdo, $_POST['category'], $_POST['title'],$_POST['description'],$_POST['ingredients'],$_POST['instructions'], $fileName);
+    if($res) 
+    {
 $messages[] = 'la recette à bien été sauvergardée';
-} else {
-$errors[]= 'la recette n\'a pas été sauvergardée';
-}
-*/
 
+} else {
+
+$errors[]= 'la recette n\'a pas été sauvergardée';
+
+}
+}
 }
 
 ?>
@@ -63,22 +70,22 @@ $errors[]= 'la recette n\'a pas été sauvergardée';
 
     <div class="mb-3">
         <label for="title" class="from-label">Titre</label>
-        <input type="text" name="title" id="title" class="form-control">
+        <input type="text" name="title" id="title" class="form-control" value="<?=$recipe['title'];?>">
     </div>
 
     <div class="mb-3">
         <label for="description" class="from-label" >Description</label>
-        <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
+        <textarea name="description" id="description" cols="30" rows="5" class="form-control"><?=$recipe['description'];?></textarea>
     </div>
 
     <div class="mb-3">
         <label for="ingredients" class="from-label" >Ingredients</label>
-        <textarea name="ingredients" id="ingredients" cols="30" rows="5" class="form-control"></textarea>
+        <textarea name="ingredients" id="ingredients" cols="30" rows="5" class="form-control"><?=$recipe['ingredients'];?></textarea>
     </div>
 
     <div class="mb-3">
         <label for="instructions" class="from-label" >Instructions</label>
-        <textarea name="instructions" id="instructions" cols="30" rows="5" class="form-control"></textarea>
+        <textarea name="instructions" id="instructions" cols="30" rows="5" class="form-control"><?=$recipe['instructions'];?></textarea>
     </div>
 
     <div class="mb-3">
@@ -86,7 +93,7 @@ $errors[]= 'la recette n\'a pas été sauvergardée';
         <select name="category" id="category" class="form-select">
 
             <?php foreach ($categories as $category) {?>
-                <option value="<?=$category['id'];?>"><?=$category['name']?></option>
+                <option value="<?=$category['id'];?>" <?php if ($recipe['category_id']==$category['id']) {echo 'selected="selected"';}    ?>  ><?=$category['name']?></option>
                 <?php } ?>
 
     </div>
