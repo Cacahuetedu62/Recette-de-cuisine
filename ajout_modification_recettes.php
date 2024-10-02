@@ -2,7 +2,62 @@
     require_once('templates/header.php');
     require_once('lib/recipe.php');
     require_once('lib/tools.php');
+    require_once('lib/category.php');
+
+
+    $errors = [];
+    $messages = [];
+
+    $categories = getCategories($pdo);
+
+
+if(isset($_POST['saveRecipe']))  {
+
+if(isset($_FILES['file']['tmp_name']) && $_FILES ['file']['tmp_name'] !=''){
+    $checkImage = getimagesize($_FILES['file']['tmp_name']);
+    if ($checkImage !== false) {
+
+
+$fileName = uniqid()."-".slugify($_FILES['file']['name']);
+move_uploaded_file($_FILES['file']['tmp_name'],_RECIPES_IMG_PATH_.$fileName);
+
+    } else {
+        $errors[] = 'le fichier doit être une image';
+    }
+}
+
+
+
+    /*
+$res = saveRecipe($pdo, $_POST['category'], $_POST['title'],$_POST['description'],$_POST['ingredients'],$_POST['instructions'], null);
+
+
+if($res) {
+$messages[] = 'la recette à bien été sauvergardée';
+} else {
+$errors[]= 'la recette n\'a pas été sauvergardée';
+}
+*/
+
+}
+
 ?>
+
+<H1>Ajouter une recette</H1>
+
+<?php foreach ($messages as $message) {?>
+    <div class="alert alert-success">
+        <?=$message;?>
+    </div>
+<?php } ?>
+
+<?php foreach ($errors as $error) {?>
+    <div class="alert alert-danger">
+        <?=$error;?>
+    </div>
+<?php } ?>
+
+
 
 <form method="POST" enctype="multipart/form-data">
 
@@ -29,10 +84,11 @@
     <div class="mb-3">
         <label for="category" class="from-label" >Catégories</label>
         <select name="category" id="category" class="form-select">
-            <option value="1">Entrée</option>
-            <option value="2">Plat</option>
-            <option value="3">Dessert</option>
-        </select>
+
+            <?php foreach ($categories as $category) {?>
+                <option value="<?=$category['id'];?>"><?=$category['name']?></option>
+                <?php } ?>
+
     </div>
 
     <div class="mb-3">

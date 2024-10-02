@@ -32,3 +32,15 @@ function getRecipes(PDO $pdo, int $limit=null){
   $query->execute();
   return $query->fetchAll();
 }
+
+function saveRecipe(PDO $pdo, int $category, string $title, string $description, string $ingredients, string $instrcutions, string|null $image){
+  $sql = "INSERT INTO `recipes` (`id`, `category_id`, `title`, `description`, `ingredients`, `instructions`, `image`) VALUES (NULL,:category_id, :title, :description, :ingredients, :instructions, :image);";
+  $query = $pdo -> prepare($sql);
+  $query -> bindparam(':category_id',$category, PDO::PARAM_INT);
+  $query -> bindparam(':title' ,$title, PDO::PARAM_STR);
+  $query -> bindparam(':description' ,$description, PDO::PARAM_STR);
+  $query -> bindparam(':ingredients' ,$ingredients, PDO::PARAM_STR);
+  $query -> bindparam(':instructions' ,$instrcutions, PDO::PARAM_STR);
+  $query -> bindparam(':image' ,$image, PDO::PARAM_STR);
+  return $query-> execute();
+}
