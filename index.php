@@ -1,11 +1,7 @@
 <?php
 require_once('templates/header.php');
-require_once('lib/recipe.php');
 
 $recipes = getRecipes($pdo, _HOME_RECIPES_LIMIT_);
-
-
-
 ?>
 
 <div class="container col-xxl-8 px-4 py-5">

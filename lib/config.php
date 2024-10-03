@@ -7,4 +7,5 @@ $mainMenu = [
     'index.php' => 'Acceuil',
     'recettes.php' => 'Nos recettes',
     'ajout_modification_recettes.php' => 'Ajout/modif recettes',
+    'login.php' => "login"
     ];

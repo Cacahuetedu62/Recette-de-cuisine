@@ -33,6 +33,8 @@ function getRecipes(PDO $pdo, int $limit=null){
   return $query->fetchAll();
 }
 
+
+
 function saveRecipe(PDO $pdo, int $category, string $title, string $description, string $ingredients, string $instrcutions, string|null $image){
   $sql = "INSERT INTO `recipes` (`id`, `category_id`, `title`, `description`, `ingredients`, `instructions`, `image`) VALUES (NULL,:category_id, :title, :description, :ingredients, :instructions, :image);";
   $query = $pdo -> prepare($sql);
